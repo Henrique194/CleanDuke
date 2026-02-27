@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 1994-1995 Apogee Software, Ltd.
+ * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ *
+ * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
+ *
+ * Duke Nukem 3D is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+#include "com_cmds.h"
+#include "com_keyword.h"
+#include "com_misc.h"
+#include "com_parser.h"
+#include "con/con.h"
+
+void COM_If(con_compiler_t* ctx) {
+    i32* tempscrptr = ctx->script_cursor;
+    ctx->script_cursor++; // Leave a spot for the fail location
+
+    i32 j;
+    do {
+        j = COM_PeekKeyword(ctx);
+        if (j == 20 || j == 39) {
+            COM_ParseCmd(ctx);
+        }
+    } while (j == 20 || j == 39);
+
+    COM_ParseCmd(ctx);
+
+    *tempscrptr = CON_EncodeScript(ctx->script_cursor);
+
+    ctx->if_depth++;
+}
+
+void COM_IfPlayer(con_compiler_t* ctx) {
+    i32 j = 0;
+    do {
+        COM_LexNum(ctx);
+        ctx->script_cursor--;
+        j |= *ctx->script_cursor;
+    } while (COM_PeekKeyword(ctx) == -1);
+    *ctx->script_cursor = j;
+    ctx->script_cursor++;
+    COM_If(ctx);
+}
+
+void COM_IfPlayerInventory(con_compiler_t* ctx) {
+    COM_LexNum(ctx);
+    COM_LexNum(ctx);
+    COM_If(ctx);
+}
+
+void COM_IfNum(con_compiler_t* ctx) {
+    COM_LexNum(ctx);
+    COM_If(ctx);
+}
+
+void COM_Else(con_compiler_t* ctx) {
+    if (!ctx->if_depth) {
+        ctx->script_cursor--;
+        COM_Error("Found 'else' with no 'if'.\n");
+        return;
+    }
+    ctx->if_depth--;
+    i32* tempscrptr = ctx->script_cursor;
+    ctx->script_cursor++; // Leave a spot for the fail location
+    COM_ParseCmd(ctx);
+    *tempscrptr = CON_EncodeScript(ctx->script_cursor);
+}

@@ -1,0 +1,71 @@
+/*
+ * Copyright (C) 1994-1995 Apogee Software, Ltd.
+ * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ *
+ * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
+ *
+ * Duke Nukem 3D is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+#ifndef CON_COMPILER_H
+#define CON_COMPILER_H
+
+#include "types.h"
+
+typedef struct {
+    // Current lexer position in source.
+    char* cursor;
+    // Current write position in bytecode.
+    i32* script_cursor;
+
+    // Pointer to loaded file text.
+    char* src;
+    // Size of loaded file text.
+    i32 src_size;
+
+    // Current line number in active file.
+    i16 line_number;
+    // Total lines processed across files.
+    i16 total_lines;
+
+    // Nesting depth of if/else blocks.
+    u8 if_depth;
+    // Braces nesting level.
+    i16 brace_depth;
+    // Currently parsing a "state" block?
+    u8 in_state_block;
+
+    // Label storage.
+    char* label;
+    // Number of defined labels.
+    i32 label_cnt;
+    // Position of given label in compiled script.
+    i32* label_code;
+
+    // Pointer to actor being parsed.
+    i32* curr_actor;
+
+    char error;
+    char warning;
+
+    i32 read_grp;
+} con_compiler_t;
+
+void COM_Error(const char* fmt, ...);
+
+void COM_Warn(const char* fmt, ...);
+
+#endif

@@ -1,0 +1,36 @@
+/*
+ * Copyright (C) 1994-1995 Apogee Software, Ltd.
+ * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ *
+ * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
+ *
+ * Duke Nukem 3D is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+#ifndef CON_TOKEN_H
+#define CON_TOKEN_H
+
+#include "com_main.h"
+#include "com_keyword.h"
+
+//
+// Returns the keyword corresponding to the command that was parsed.
+//
+con_keyword_t COM_ParseCmd(con_compiler_t* ctx);
+
+void COM_ParseFile(con_compiler_t* ctx);
+
+#endif
