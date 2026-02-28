@@ -21,63 +21,63 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_keyword.h"
-#include "com_misc.h"
-#include "com_parser.h"
+#include "con_cmds.h"
+#include "con_keyword.h"
+#include "con_misc.h"
+#include "con_parser.h"
 #include "con/con.h"
 
-void COM_If(con_compiler_t* ctx) {
+void CON_If(con_compiler_t* ctx) {
     i32* tempscrptr = ctx->script_cursor;
     ctx->script_cursor++; // Leave a spot for the fail location
 
     i32 j;
     do {
-        j = COM_PeekKeyword(ctx);
+        j = CON_PeekKeyword(ctx);
         if (j == 20 || j == 39) {
-            COM_ParseCmd(ctx);
+            CON_ParseCmd(ctx);
         }
     } while (j == 20 || j == 39);
 
-    COM_ParseCmd(ctx);
+    CON_ParseCmd(ctx);
 
     *tempscrptr = CON_EncodeScript(ctx->script_cursor);
 
     ctx->if_depth++;
 }
 
-void COM_IfPlayer(con_compiler_t* ctx) {
+void CON_IfPlayer(con_compiler_t* ctx) {
     i32 j = 0;
     do {
-        COM_LexNum(ctx);
+        CON_LexNum(ctx);
         ctx->script_cursor--;
         j |= *ctx->script_cursor;
-    } while (COM_PeekKeyword(ctx) == -1);
+    } while (CON_PeekKeyword(ctx) == -1);
     *ctx->script_cursor = j;
     ctx->script_cursor++;
-    COM_If(ctx);
+    CON_If(ctx);
 }
 
-void COM_IfPlayerInventory(con_compiler_t* ctx) {
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
-    COM_If(ctx);
+void CON_IfPlayerInventory(con_compiler_t* ctx) {
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
+    CON_If(ctx);
 }
 
-void COM_IfNum(con_compiler_t* ctx) {
-    COM_LexNum(ctx);
-    COM_If(ctx);
+void CON_IfNum(con_compiler_t* ctx) {
+    CON_LexNum(ctx);
+    CON_If(ctx);
 }
 
-void COM_Else(con_compiler_t* ctx) {
+void CON_Else(con_compiler_t* ctx) {
     if (!ctx->if_depth) {
         ctx->script_cursor--;
-        COM_Error("Found 'else' with no 'if'.\n");
+        CON_Error("Found 'else' with no 'if'.\n");
         return;
     }
     ctx->if_depth--;
     i32* tempscrptr = ctx->script_cursor;
     ctx->script_cursor++; // Leave a spot for the fail location
-    COM_ParseCmd(ctx);
+    CON_ParseCmd(ctx);
     *tempscrptr = CON_EncodeScript(ctx->script_cursor);
 }

@@ -23,8 +23,8 @@
 
 #include <SDL_stdinc.h>
 #include "con/con.h"
-#include "com_main.h"
-#include "com_parser.h"
+#include "con_main.h"
+#include "con_parser.h"
 #include "build/engine.h"
 #include "funct.h"
 
@@ -97,27 +97,18 @@ static void CON_DetectVersion(void) {
     printf("Con version: Looks like v%d\n", conVersion);
 }
 
-static void CON_SaveScript(void) {
-    FILE* file = fopen("SCRIPT.TXT", "wb");
-    for (int i = 0; i < MAXSCRIPTSIZE; i++) {
-        fprintf(file, "%d\n", script[i]);
-    }
-    fclose(file);
-}
-
-bool COM_CompileFile(const char* file, int read_grp) {
+bool CON_CompileFile(const char* file, int read_grp) {
     if (!CON_SetupCompiler(file, read_grp)) {
         return false;
     }
     printf("Compiling: '%s'.\n", file);
-    COM_ParseFile(&ctx);
+    CON_ParseFile(&ctx);
     if (ctx.error) {
         Error(EXIT_SUCCESS, "ERROR in CON(%s)\n", file);
         return false;
     }
     CON_SetSize();
     CON_DetectVersion();
-    // CON_SaveScript();
     return true;
 }
 
@@ -145,7 +136,7 @@ i32* CON_DecodeScript(i32 scptr) {
 }
 
 
-void COM_Error(const char* fmt, ...) {
+void CON_Error(const char* fmt, ...) {
     ctx.error++;
 
     printf("  * ERROR!(L%hd) ", ctx.line_number);
@@ -156,7 +147,7 @@ void COM_Error(const char* fmt, ...) {
     va_end(args);
 }
 
-void COM_Warn(const char* fmt, ...) {
+void CON_Warn(const char* fmt, ...) {
     ctx.warning++;
 
     printf("  * WARNING.(L%hd) ", ctx.line_number);

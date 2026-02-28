@@ -25,7 +25,7 @@
 
 #include "types.h"
 
-bool COM_CompileFile(const char* file, int read_grp);
+bool CON_CompileFile(const char* file, int read_grp);
 
 i32 CON_EncodeScript(const i32* scptr);
 

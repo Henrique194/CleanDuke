@@ -21,31 +21,30 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_main.h"
+#include "con_label.h"
+#include "con_misc.h"
+#include "types.h"
 
-
-void COM_SkipComment(con_compiler_t* ctx) {
-    ctx->script_cursor--; // Negate the rem
-    while (*ctx->cursor != '\n') {
-        ctx->cursor++;
+int CON_GetLabel(const con_compiler_t* ctx, const char* str) {
+    for (i32 i = 0; i < ctx->label_cnt; i++) {
+        if (strcmp(str, ctx->label + (i << 6)) == 0) {
+            return i;
+        }
     }
+    return -1;
 }
 
-void COM_SkipBlockComment(con_compiler_t* ctx) {
-    ctx->script_cursor--;
-    short new_lines = 0;
-    do {
-        if (*ctx->cursor == '\n') {
-            new_lines++;
-        }
-        if (*ctx->cursor == 0) {
-            COM_Error("Found '/*' with no '*/'.\n");
-            ctx->line_number += new_lines;
-            return;
-        }
-        ctx->cursor++;
-    } while (ctx->cursor[0] != '*' || ctx->cursor[1] != '/');
-    ctx->line_number += new_lines;
-    ctx->cursor += 2;
+bool CON_IsLabel(const con_compiler_t* ctx, const char* str) {
+    return CON_GetLabel(ctx, str) != -1;
+}
+
+const char* CON_LexLabel(con_compiler_t* ctx) {
+    CON_SkipSpace(ctx);
+    i32 i = 0;
+    char* l = &ctx->label[ctx->label_cnt << 6];
+    while (!CON_IsSpecial(ctx, *ctx->cursor)) {
+        l[i++] = *(ctx->cursor++);
+    }
+    l[i] = 0;
+    return l;
 }

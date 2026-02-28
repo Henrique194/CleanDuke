@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
+#include "con_cmds.h"
 
-void COM_BetaName(con_compiler_t* ctx) {
+void CON_BetaName(con_compiler_t* ctx) {
     static u8 betaname[80];
     ctx->script_cursor--;
     i32 j = 0;

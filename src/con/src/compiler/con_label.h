@@ -21,21 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_keyword.h"
-#include "com_misc.h"
+#pragma once
 
-void COM_PalFrom(con_compiler_t* ctx) {
-    i32 j;
-    for (j = 0; j < 4; j++) {
-        if (COM_PeekKeyword(ctx) != -1) {
-            break;
-        }
-        COM_LexNum(ctx);
-    }
-    while (j < 4) {
-        *ctx->script_cursor = 0;
-        ctx->script_cursor++;
-        j++;
-    }
-}
+#include "con_main.h"
+
+int CON_GetLabel(const con_compiler_t* ctx, const char* str);
+
+bool CON_IsLabel(const con_compiler_t* ctx, const char* str);
+
+const char* CON_LexLabel(con_compiler_t* ctx);

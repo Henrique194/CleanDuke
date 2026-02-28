@@ -23,78 +23,78 @@
 
 #pragma once
 
-#include "com_main.h"
+#include "con_main.h"
 
 //
 // action <name> <startframe> <frames> <viewtype> <incvalue> <delay>
 //
-void COM_Action(con_compiler_t* ctx);
+void CON_Action(con_compiler_t* ctx);
 
-void COM_Actor(con_compiler_t* ctx);
+void CON_Actor(con_compiler_t* ctx);
 
-void COM_EndActor(con_compiler_t* ctx);
+void CON_EndActor(con_compiler_t* ctx);
 
-void COM_UserActor(con_compiler_t* ctx);
+void CON_UserActor(con_compiler_t* ctx);
 
 //
 // ai <name> <action> <speed> <type>
 //
-void COM_AI(con_compiler_t* ctx);
+void CON_AI(con_compiler_t* ctx);
 
-void COM_BetaName(con_compiler_t* ctx);
+void CON_BetaName(con_compiler_t* ctx);
 
-void COM_RightBrace(con_compiler_t* ctx);
+void CON_RightBrace(con_compiler_t* ctx);
 
-void COM_LeftBrace(con_compiler_t* ctx);
+void CON_LeftBrace(con_compiler_t* ctx);
 
-void COM_SkipComment(con_compiler_t* ctx);
+void CON_SkipComment(con_compiler_t* ctx);
 
-void COM_SkipBlockComment(con_compiler_t* ctx);
+void CON_SkipBlockComment(con_compiler_t* ctx);
 
 //
 // define <string> <value>
 //
-void COM_Define(con_compiler_t* ctx);
+void CON_Define(con_compiler_t* ctx);
 
-void COM_DefineSound(con_compiler_t* ctx);
+void CON_DefineSound(con_compiler_t* ctx);
 
-void COM_DefineQuote(con_compiler_t* ctx);
+void CON_DefineQuote(con_compiler_t* ctx);
 
-void COM_DefineLevelName(con_compiler_t* ctx);
+void CON_DefineLevelName(con_compiler_t* ctx);
 
-void COM_DefineSkillName(con_compiler_t* ctx);
+void CON_DefineSkillName(con_compiler_t* ctx);
 
-void COM_DefineVolName(con_compiler_t* ctx);
+void CON_DefineVolName(con_compiler_t* ctx);
 
-void COM_GameStartup(con_compiler_t* ctx);
+void CON_GameStartup(con_compiler_t* ctx);
 
-void COM_If(con_compiler_t* ctx);
+void CON_If(con_compiler_t* ctx);
 
-void COM_IfPlayer(con_compiler_t* ctx);
+void CON_IfPlayer(con_compiler_t* ctx);
 
-void COM_IfPlayerInventory(con_compiler_t* ctx);
+void CON_IfPlayerInventory(con_compiler_t* ctx);
 
-void COM_IfNum(con_compiler_t* ctx);
+void CON_IfNum(con_compiler_t* ctx);
 
-void COM_Else(con_compiler_t* ctx);
+void CON_Else(con_compiler_t* ctx);
 
 //
 // include <filename>
 //
-void COM_Include(con_compiler_t* ctx);
+void CON_Include(con_compiler_t* ctx);
 
 //
 // move <name> <horizontal> <vertical> <directions>
 //
-void COM_Move(con_compiler_t* ctx);
+void CON_Move(con_compiler_t* ctx);
 
-void COM_Music(con_compiler_t* ctx);
+void CON_Music(con_compiler_t* ctx);
 
 //
 // palfrom <intensity> <red> <green> <blue>
 //
-void COM_PalFrom(con_compiler_t* ctx);
+void CON_PalFrom(con_compiler_t* ctx);
 
-void COM_State(con_compiler_t* ctx);
+void CON_State(con_compiler_t* ctx);
 
-void COM_Ends(con_compiler_t* ctx);
+void CON_Ends(con_compiler_t* ctx);

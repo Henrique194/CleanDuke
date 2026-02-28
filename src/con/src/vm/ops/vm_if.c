@@ -22,7 +22,7 @@
  */
 
 #include "vm_ops.h"
-#include "com_keyword.h"
+#include "con_keyword.h"
 #include "names.h"
 #include "build/engine.h"
 #include "actors/actors.h"

@@ -23,10 +23,47 @@
 
 #pragma once
 
-#include "com_main.h"
+#include "types.h"
 
-int COM_GetLabel(const con_compiler_t* ctx, const char* str);
+typedef struct {
+    // Current lexer position in source.
+    char* cursor;
+    // Current write position in bytecode.
+    i32* script_cursor;
 
-bool COM_IsLabel(const con_compiler_t* ctx, const char* str);
+    // Pointer to loaded file text.
+    char* src;
+    // Size of loaded file text.
+    i32 src_size;
 
-const char* COM_LexLabel(con_compiler_t* ctx);
+    // Current line number in active file.
+    i16 line_number;
+    // Total lines processed across files.
+    i16 total_lines;
+
+    // Nesting depth of if/else blocks.
+    u8 if_depth;
+    // Braces nesting level.
+    i16 brace_depth;
+    // Currently parsing a "state" block?
+    u8 in_state_block;
+
+    // Label storage.
+    char* label;
+    // Number of defined labels.
+    i32 label_cnt;
+    // Position of given label in compiled script.
+    i32* label_code;
+
+    // Pointer to actor being parsed.
+    i32* curr_actor;
+
+    char error;
+    char warning;
+
+    i32 read_grp;
+} con_compiler_t;
+
+void CON_Error(const char* fmt, ...);
+
+void CON_Warn(const char* fmt, ...);

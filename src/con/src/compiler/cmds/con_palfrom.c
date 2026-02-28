@@ -21,30 +21,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_label.h"
-#include "com_misc.h"
-#include "types.h"
+#include "con_cmds.h"
+#include "con_keyword.h"
+#include "con_misc.h"
 
-int COM_GetLabel(const con_compiler_t* ctx, const char* str) {
-    for (i32 i = 0; i < ctx->label_cnt; i++) {
-        if (strcmp(str, ctx->label + (i << 6)) == 0) {
-            return i;
+void CON_PalFrom(con_compiler_t* ctx) {
+    i32 j;
+    for (j = 0; j < 4; j++) {
+        if (CON_PeekKeyword(ctx) != -1) {
+            break;
         }
+        CON_LexNum(ctx);
     }
-    return -1;
-}
-
-bool COM_IsLabel(const con_compiler_t* ctx, const char* str) {
-    return COM_GetLabel(ctx, str) != -1;
-}
-
-const char* COM_LexLabel(con_compiler_t* ctx) {
-    COM_SkipSpace(ctx);
-    i32 i = 0;
-    char* l = &ctx->label[ctx->label_cnt << 6];
-    while (!COM_IsSpecial(ctx, *ctx->cursor)) {
-        l[i++] = *(ctx->cursor++);
+    while (j < 4) {
+        *ctx->script_cursor = 0;
+        ctx->script_cursor++;
+        j++;
     }
-    l[i] = 0;
-    return l;
 }

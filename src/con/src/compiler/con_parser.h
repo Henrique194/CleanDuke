@@ -21,41 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_keyword.h"
-#include "com_label.h"
-#include "com_misc.h"
-#include "con/con.h"
+#pragma once
 
-void COM_Action(con_compiler_t* ctx) {
-    if (ctx->curr_actor || ctx->in_state_block) {
-        COM_LexNum(ctx);
-        return;
-    }
+#include "con_main.h"
+#include "con_keyword.h"
 
-    ctx->script_cursor--;
-    const char* str = COM_LexLabel(ctx);
+//
+// Returns the keyword corresponding to the command that was parsed.
+//
+con_keyword_t CON_ParseCmd(con_compiler_t* ctx);
 
-    // Check to see it's already defined.
-    if (COM_IsKeyword(str)) {
-        COM_Error("Symbol '%s' is a key word.\n", str);
-        return;
-    }
-    if (COM_IsLabel(ctx, str)) {
-        COM_Warn("Duplicate action '%s' ignored.\n", str);
-    } else {
-        ctx->label_code[ctx->label_cnt] = CON_EncodeScript(ctx->script_cursor);
-        ctx->label_cnt++;
-    }
-
-    i32 i = 0;
-    while (i < 5 && COM_PeekKeyword(ctx) < 0) {
-        COM_LexNum(ctx);
-        i++;
-    }
-    while (i < 5) {
-        *ctx->script_cursor = 0;
-        ctx->script_cursor++;
-        i++;
-    }
-}
+void CON_ParseFile(con_compiler_t* ctx);

@@ -21,22 +21,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_misc.h"
-#include "com_keyword.h"
-#include "com_label.h"
+#include "con_cmds.h"
+#include "con_misc.h"
+#include "con_keyword.h"
+#include "con_label.h"
 #include "funct.h"
 #include "types.h"
 
-void COM_Define(con_compiler_t* ctx) {
-    const char* str = COM_LexLabel(ctx);
-    if (COM_IsKeyword(str)) {
-        COM_Error("Symbol '%s' is a key word.\n", str);
+void CON_Define(con_compiler_t* ctx) {
+    const char* str = CON_LexLabel(ctx);
+    if (CON_IsKeyword(str)) {
+        CON_Error("Symbol '%s' is a key word.\n", str);
         return;
     }
-    COM_LexNum(ctx);
-    if (COM_IsLabel(ctx, str)) {
-        COM_Warn("Duplicate definition '%s' ignored.\n", str);
+    CON_LexNum(ctx);
+    if (CON_IsLabel(ctx, str)) {
+        CON_Warn("Duplicate definition '%s' ignored.\n", str);
     } else {
         ctx->label_code[ctx->label_cnt] = *(ctx->script_cursor - 1);
         ctx->label_cnt++;
@@ -44,12 +44,12 @@ void COM_Define(con_compiler_t* ctx) {
     ctx->script_cursor -= 2;
 }
 
-void COM_DefineSound(con_compiler_t* ctx) {
+void CON_DefineSound(con_compiler_t* ctx) {
     ctx->script_cursor--;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     i32 k = *(ctx->script_cursor - 1);
     if (k >= NUM_SOUNDS) {
-        COM_Error("Exceeded sound limit of %d.\n", NUM_SOUNDS);
+        CON_Error("Exceeded sound limit of %d.\n", NUM_SOUNDS);
     }
     ctx->script_cursor--;
 
@@ -64,7 +64,7 @@ void COM_DefineSound(con_compiler_t* ctx) {
         i++;
         if (i >= 13) {
             puts(sounds[k]);
-            COM_Error("Sound filename exceeded limit of 13 characters.\n");
+            CON_Error("Sound filename exceeded limit of 13 characters.\n");
             while (*ctx->cursor != ' ')
                 ctx->cursor++;
             break;
@@ -72,33 +72,33 @@ void COM_DefineSound(con_compiler_t* ctx) {
     }
     sounds[k][i] = '\0';
 
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     soundps[k] = *(ctx->script_cursor - 1);
     ctx->script_cursor--;
 
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     soundpe[k] = *(ctx->script_cursor - 1);
     ctx->script_cursor--;
 
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     soundpr[k] = *(ctx->script_cursor - 1);
     ctx->script_cursor--;
 
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     soundm[k] = *(ctx->script_cursor - 1);
     ctx->script_cursor--;
 
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     soundvo[k] = *(ctx->script_cursor - 1);
     ctx->script_cursor--;
 }
 
-void COM_DefineQuote(con_compiler_t* ctx) {
+void CON_DefineQuote(con_compiler_t* ctx) {
     ctx->script_cursor--;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     i32 k = *(ctx->script_cursor - 1);
     if (k >= NUMOFFIRSTTIMEACTIVE) {
-        COM_Error("Quote amount exceeds limit of %d characters.\n", NUMOFFIRSTTIMEACTIVE);
+        CON_Error("Quote amount exceeds limit of %d characters.\n", NUMOFFIRSTTIMEACTIVE);
     }
     ctx->script_cursor--;
 
@@ -112,7 +112,7 @@ void COM_DefineQuote(con_compiler_t* ctx) {
         ctx->cursor++;
         i++;
         if (i >= 64) {
-            COM_Error("Quote exceeds character size limit of 64.\n");
+            CON_Error("Quote exceeds character size limit of 64.\n");
             while (*ctx->cursor != '\n')
                 ctx->cursor++;
             break;
@@ -121,12 +121,12 @@ void COM_DefineQuote(con_compiler_t* ctx) {
     fta_quotes[k][i] = '\0';
 }
 
-void COM_DefineLevelName(con_compiler_t* ctx) {
+void CON_DefineLevelName(con_compiler_t* ctx) {
     ctx->script_cursor--;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     ctx->script_cursor--;
     i32 j = *ctx->script_cursor;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     ctx->script_cursor--;
     i32 k = *ctx->script_cursor;
     while (*ctx->cursor == ' ') {
@@ -139,7 +139,7 @@ void COM_DefineLevelName(con_compiler_t* ctx) {
         ctx->cursor++;
         i++;
         if (i > 127) {
-            COM_Error("Level file name exceeds character size limit of 128.\n");
+            CON_Error("Level file name exceeds character size limit of 128.\n");
             while (*ctx->cursor != ' ')
                 ctx->cursor++;
             break;
@@ -180,7 +180,7 @@ void COM_DefineLevelName(con_compiler_t* ctx) {
         ctx->cursor++;
         i++;
         if (i >= 32) {
-            COM_Error("Level name exceeds character size limit of 32.\n");
+            CON_Error("Level name exceeds character size limit of 32.\n");
             while (*ctx->cursor != '\n')
                 ctx->cursor++;
             break;
@@ -193,9 +193,9 @@ void COM_DefineLevelName(con_compiler_t* ctx) {
 #endif
 }
 
-void COM_DefineSkillName(con_compiler_t* ctx) {
+void CON_DefineSkillName(con_compiler_t* ctx) {
     ctx->script_cursor--;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     ctx->script_cursor--;
 
     i32 j = *ctx->script_cursor;
@@ -209,7 +209,7 @@ void COM_DefineSkillName(con_compiler_t* ctx) {
         ctx->cursor++;
         i++;
         if (i >= 32) {
-            COM_Error("Skill name exceeds character size limit of 32.\n");
+            CON_Error("Skill name exceeds character size limit of 32.\n");
             while (*ctx->cursor != '\n')
                 ctx->cursor++;
             break;
@@ -222,9 +222,9 @@ void COM_DefineSkillName(con_compiler_t* ctx) {
 #endif
 }
 
-void COM_DefineVolName(con_compiler_t* ctx) {
+void CON_DefineVolName(con_compiler_t* ctx) {
     ctx->script_cursor--;
-    COM_LexNum(ctx);
+    CON_LexNum(ctx);
     ctx->script_cursor--;
 
     i32 j = *ctx->script_cursor;
@@ -238,7 +238,7 @@ void COM_DefineVolName(con_compiler_t* ctx) {
         ctx->cursor++;
         i++;
         if (i >= 32) {
-            COM_Error("Volume name exceeds character size limit of 32.\n");
+            CON_Error("Volume name exceeds character size limit of 32.\n");
             while (*ctx->cursor != '\n') {
                 ctx->cursor++;
             }

@@ -21,20 +21,40 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#pragma once
+#include "con_cmds.h"
+#include "con_keyword.h"
+#include "con_misc.h"
+#include "duke3d.h"
 
-#include "com_main.h"
+void CON_Music(con_compiler_t* ctx) {
+    ctx->script_cursor--;
+    CON_LexNum(ctx); // Volume Number (0/4)
+    ctx->script_cursor--;
 
-bool COM_IsLetter(char c);
+    i32 k = *ctx->script_cursor - 1;
+    char (*mus_fn)[13];
+    if (k >= 0) {
+        // Background music.
+        mus_fn = music_fn[k];
+    } else {
+        mus_fn = env_music_fn;
+    }
 
-bool COM_IsSpecial(con_compiler_t* ctx, char c);
+    i32 i = 0;
+    while (CON_PeekKeyword(ctx) == -1) {
+        CON_SkipSpace(ctx);
 
-void COM_SkipSpace(con_compiler_t* ctx);
+        i32 j = 0;
+        while (CON_IsLetter(ctx->cursor[j])) {
+            mus_fn[i][j] = ctx->cursor[j];
+            j++;
+        }
+        mus_fn[i][j] = '\0';
+        ctx->cursor += j;
 
-char* COM_LexString(con_compiler_t* ctx);
-
-void COM_LexNum(con_compiler_t* ctx);
-
-void COM_LexNum2(con_compiler_t* ctx);
-
-void COM_LexNum5(con_compiler_t* ctx);
+        if (i > 9) {
+            break;
+        }
+        i++;
+    }
+}

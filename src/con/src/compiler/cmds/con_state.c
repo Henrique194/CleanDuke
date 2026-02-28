@@ -21,43 +21,43 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_keyword.h"
-#include "com_label.h"
+#include "con_cmds.h"
+#include "con_keyword.h"
+#include "con_label.h"
 #include "con/con.h"
 
-void COM_State(con_compiler_t* ctx) {
+void CON_State(con_compiler_t* ctx) {
     if (!ctx->curr_actor && !ctx->in_state_block) {
-        COM_LexLabel(ctx);
+        CON_LexLabel(ctx);
         ctx->script_cursor--;
         ctx->label_code[ctx->label_cnt] = CON_EncodeScript(ctx->script_cursor);
         ctx->label_cnt++;
         ctx->in_state_block = 1;
         return;
     }
-    const char* str = COM_LexLabel(ctx);
-    if (COM_IsKeyword(str)) {
-        COM_Error("Symbol '%s' is a key word.\n", str);
+    const char* str = CON_LexLabel(ctx);
+    if (CON_IsKeyword(str)) {
+        CON_Error("Symbol '%s' is a key word.\n", str);
         return;
     }
-    const int code = COM_GetLabel(ctx, str);
+    const int code = CON_GetLabel(ctx, str);
     if (code >= 0) {
         *ctx->script_cursor = ctx->label_code[code];
     } else {
-        COM_Error("State '%s' not found.\n", str);
+        CON_Error("State '%s' not found.\n", str);
     }
     ctx->script_cursor++;
 }
 
-void COM_Ends(con_compiler_t* ctx) {
+void CON_Ends(con_compiler_t* ctx) {
     if (ctx->in_state_block == 0) {
-        COM_Error("Found 'ends' with no 'state'.\n");
+        CON_Error("Found 'ends' with no 'state'.\n");
     }
     if (ctx->brace_depth > 0) {
-        COM_Error("Found more '{' than '}' before 'ends'.\n");
+        CON_Error("Found more '{' than '}' before 'ends'.\n");
     }
     if (ctx->brace_depth < 0) {
-        COM_Error("Found more '}' than '{' before 'ends'.\n");
+        CON_Error("Found more '}' than '{' before 'ends'.\n");
     }
     ctx->in_state_block = 0;
 }

@@ -23,7 +23,7 @@
 
 #include "vm_main.h"
 #include "ops/vm_ops.h"
-#include "com_keyword.h"
+#include "con_keyword.h"
 
 typedef void (*con_operation_t)(con_vm_t* vm);
 
@@ -138,28 +138,11 @@ static bool VM_ExecuteOp(con_vm_t* vm, i32 opcode) {
     return false;
 }
 
-static void VM_SaveOp(int opcode) {
-    static FILE* f;
-    static int i = 1;
-    if (!f) {
-        f = fopen("VM.TXT", "wb");
-    }
-    if (f) {
-        fprintf(f, "%d\n", opcode);
-        fflush(f);
-    }
-    if (i == 1000000) {
-        printf("HERE\n");
-    }
-    i++;
-}
-
 bool parse(con_vm_t* vm) {
     if (vm->killit_flag) {
         return true;
     }
     i32 opcode = VM_READ(vm);
-    // VM_SaveOp(opcode);
     if (!VM_ExecuteOp(vm, opcode)) {
         vm->killit_flag = 1;
         return false;

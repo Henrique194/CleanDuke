@@ -21,19 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_misc.h"
-#include "com_parser.h"
+#include "con_cmds.h"
+#include "con_misc.h"
+#include "con_parser.h"
 #include "build/filesystem.h"
 #include "funct.h"
 #include "global.h"
 
-void COM_Include(con_compiler_t* ctx) {
+void CON_Include(con_compiler_t* ctx) {
     ctx->script_cursor--;
 
-    COM_SkipSpace(ctx);
+    CON_SkipSpace(ctx);
 
-    char* file = COM_LexString(ctx);
+    char* file = CON_LexString(ctx);
     // Fix path for unix. (doesn't really matter...)
     FixFilePath(file);
     char con_file[512];
@@ -41,7 +41,7 @@ void COM_Include(con_compiler_t* ctx) {
 
     int fp = TCkopen4load(con_file, ctx->read_grp);
     if (fp <= 0) {
-        COM_Error("Could not find '%s'.\n", con_file);
+        CON_Error("Could not find '%s'.\n", con_file);
         gameexit("");
         return;
     }
@@ -63,7 +63,7 @@ void COM_Include(con_compiler_t* ctx) {
     kclose(fp);
     ud.conCRC[0] = crc32_update((u8*) ctx->cursor, j, ud.conCRC[0]);
     while (true) {
-        con_keyword_t keyword = COM_ParseCmd(ctx);
+        con_keyword_t keyword = CON_ParseCmd(ctx);
         if (keyword == CK_NONE) {
             break;
         }

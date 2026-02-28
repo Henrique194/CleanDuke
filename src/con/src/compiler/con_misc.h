@@ -23,12 +23,18 @@
 
 #pragma once
 
-#include "com_main.h"
-#include "com_keyword.h"
+#include "con_main.h"
 
-//
-// Returns the keyword corresponding to the command that was parsed.
-//
-con_keyword_t COM_ParseCmd(con_compiler_t* ctx);
+bool CON_IsLetter(char c);
 
-void COM_ParseFile(con_compiler_t* ctx);
+bool CON_IsSpecial(con_compiler_t* ctx, char c);
+
+void CON_SkipSpace(con_compiler_t* ctx);
+
+char* CON_LexString(con_compiler_t* ctx);
+
+void CON_LexNum(con_compiler_t* ctx);
+
+void CON_LexNum2(con_compiler_t* ctx);
+
+void CON_LexNum5(con_compiler_t* ctx);

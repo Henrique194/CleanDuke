@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "com_main.h"
+#include "con_main.h"
 #include "types.h"
 
 typedef enum {
@@ -144,10 +144,10 @@ typedef enum {
 } con_keyword_t;
 
 
-con_keyword_t COM_GetKeyword(const char* str);
+con_keyword_t CON_GetKeyword(const char* str);
 
-bool COM_IsKeyword(const char* str);
+bool CON_IsKeyword(const char* str);
 
-con_keyword_t COM_LexKeyword(con_compiler_t* ctx);
+con_keyword_t CON_LexKeyword(con_compiler_t* ctx);
 
-i32 COM_PeekKeyword(const con_compiler_t* ctx);
+i32 CON_PeekKeyword(const con_compiler_t* ctx);

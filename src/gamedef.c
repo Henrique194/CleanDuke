@@ -227,7 +227,7 @@ static int CON_CheckVersion(void) {
 }
 
 void CON_LoadFile(char* file, int read_grp) {
-    if (!COM_CompileFile(file, read_grp)) {
+    if (!CON_CompileFile(file, read_grp)) {
         return;
     }
     if (CON_CheckVersion()) {

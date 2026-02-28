@@ -3,31 +3,31 @@ set(LIB con)
 list(REMOVE_ITEM LIBS ${LIB})
 
 set(COMPILER_SRC
-    src/compiler/cmds/com_action.c
-    src/compiler/cmds/com_actor.c
-    src/compiler/cmds/com_ai.c
-    src/compiler/cmds/com_betaname.c
-    src/compiler/cmds/com_braces.c
-    src/compiler/cmds/com_cmds.h
-    src/compiler/cmds/com_comment.c
-    src/compiler/cmds/com_define.c
-    src/compiler/cmds/com_gamestartup.c
-    src/compiler/cmds/com_if.c
-    src/compiler/cmds/com_include.c
-    src/compiler/cmds/com_move.c
-    src/compiler/cmds/com_music.c
-    src/compiler/cmds/com_palfrom.c
-    src/compiler/cmds/com_state.c
-    src/compiler/com_main.c
-    src/compiler/com_main.h
-    src/compiler/com_keyword.c
-    src/compiler/com_keyword.h
-    src/compiler/com_label.c
-    src/compiler/com_label.h
-    src/compiler/com_misc.c
-    src/compiler/com_misc.h
-    src/compiler/com_parser.c
-    src/compiler/com_parser.h
+    src/compiler/cmds/con_action.c
+    src/compiler/cmds/con_actor.c
+    src/compiler/cmds/con_ai.c
+    src/compiler/cmds/con_betaname.c
+    src/compiler/cmds/con_braces.c
+    src/compiler/cmds/con_cmds.h
+    src/compiler/cmds/con_comment.c
+    src/compiler/cmds/con_define.c
+    src/compiler/cmds/con_gamestartup.c
+    src/compiler/cmds/con_if.c
+    src/compiler/cmds/con_include.c
+    src/compiler/cmds/con_move.c
+    src/compiler/cmds/con_music.c
+    src/compiler/cmds/con_palfrom.c
+    src/compiler/cmds/con_state.c
+    src/compiler/con_main.c
+    src/compiler/con_main.h
+    src/compiler/con_keyword.c
+    src/compiler/con_keyword.h
+    src/compiler/con_label.c
+    src/compiler/con_label.h
+    src/compiler/con_misc.c
+    src/compiler/con_misc.h
+    src/compiler/con_parser.c
+    src/compiler/con_parser.h
 )
 
 set(VM_SRC

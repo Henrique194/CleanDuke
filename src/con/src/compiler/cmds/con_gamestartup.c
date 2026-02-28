@@ -21,24 +21,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_keyword.h"
-#include "com_misc.h"
+#include "con_cmds.h"
+#include "con_keyword.h"
+#include "con_misc.h"
 #include "duke3d.h"
 
-void COM_GameStartup(con_compiler_t* ctx) {
+void CON_GameStartup(con_compiler_t* ctx) {
     i32 params[30];
 
     ctx->script_cursor--;
     for (i32 j = 0; j < 30; j++) {
-        COM_LexNum(ctx);
+        CON_LexNum(ctx);
         ctx->script_cursor--;
         params[j] = *ctx->script_cursor;
         if (j != 25) {
             continue;
         }
         // We try to guess if we are using 1.3/1.3d or 1.4/1.5 con files.
-        if (COM_PeekKeyword(ctx) != -1) {
+        if (CON_PeekKeyword(ctx) != -1) {
             // Is the 26th variable set?
             // If so then it's probably a 1.4/1.5 con file
             break;

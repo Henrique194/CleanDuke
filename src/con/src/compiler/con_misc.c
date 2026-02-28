@@ -21,18 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_misc.h"
-#include "com_keyword.h"
-#include "com_label.h"
+#include "con_misc.h"
+#include "con_keyword.h"
+#include "con_label.h"
 #include "types.h"
 #include "duke3d.h"
 
-bool COM_IsLetter(char c) {
+bool CON_IsLetter(char c) {
     return SDL_isalnum(c) || c == '{' || c == '}' || c == '/'
            || c == '*' || c == '-' || c == '_' || c == '.';
 }
 
-bool COM_IsSpecial(con_compiler_t* ctx, char c) {
+bool CON_IsSpecial(con_compiler_t* ctx, char c) {
     if (c == '\n') {
         ctx->line_number++;
         return true;
@@ -40,8 +40,8 @@ bool COM_IsSpecial(con_compiler_t* ctx, char c) {
     return c == ' ' || c == '\r';
 }
 
-void COM_SkipSpace(con_compiler_t* ctx) {
-    while (!COM_IsLetter(*ctx->cursor)) {
+void CON_SkipSpace(con_compiler_t* ctx) {
+    while (!CON_IsLetter(*ctx->cursor)) {
         if (*ctx->cursor == 0) {
             break;
         }
@@ -52,9 +52,9 @@ void COM_SkipSpace(con_compiler_t* ctx) {
     }
 }
 
-char* COM_LexString(con_compiler_t* ctx) {
+char* CON_LexString(con_compiler_t* ctx) {
     i32 j = 0;
-    while (COM_IsLetter(*ctx->cursor)) {
+    while (CON_IsLetter(*ctx->cursor)) {
         tempbuf[j] = *(ctx->cursor++);
         j++;
     }
@@ -62,35 +62,35 @@ char* COM_LexString(con_compiler_t* ctx) {
     return (char*) tempbuf;
 }
 
-void COM_LexNum(con_compiler_t* ctx) {
-    COM_SkipSpace(ctx);
-    const char* str = COM_LexString(ctx);
-    if (COM_IsKeyword(ctx->label + (ctx->label_cnt << 6))) {
-        COM_Error("Symbol '%s' is a key word.\n", ctx->label + (ctx->label_cnt << 6));
+void CON_LexNum(con_compiler_t* ctx) {
+    CON_SkipSpace(ctx);
+    const char* str = CON_LexString(ctx);
+    if (CON_IsKeyword(ctx->label + (ctx->label_cnt << 6))) {
+        CON_Error("Symbol '%s' is a key word.\n", ctx->label + (ctx->label_cnt << 6));
     }
-    const int code = COM_GetLabel(ctx, str);
+    const int code = CON_GetLabel(ctx, str);
     if (code >= 0) {
         *ctx->script_cursor = ctx->label_code[code];
         ctx->script_cursor++;
         return;
     }
     if (!SDL_isdigit(*str) && *str != '-') {
-        COM_Error("Parameter '%s' is undefined.\n", str);
+        CON_Error("Parameter '%s' is undefined.\n", str);
         return;
     }
     *ctx->script_cursor = atol(str);
     ctx->script_cursor++;
 }
 
-void COM_LexNum2(con_compiler_t* ctx) {
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
+void CON_LexNum2(con_compiler_t* ctx) {
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
 }
 
-void COM_LexNum5(con_compiler_t* ctx) {
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
-    COM_LexNum(ctx);
+void CON_LexNum5(con_compiler_t* ctx) {
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
+    CON_LexNum(ctx);
 }

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_keyword.h"
-#include "com_misc.h"
+#include "con_keyword.h"
+#include "con_misc.h"
 #include "duke3d.h"
 #include <SDL_stdinc.h>
 
@@ -142,7 +142,7 @@ static const char* keyw[NUM_KEYWORDS] = {
 };
 
 
-con_keyword_t COM_GetKeyword(const char* str) {
+con_keyword_t CON_GetKeyword(const char* str) {
     for (i32 i = 0; i < NUM_KEYWORDS; i++) {
         if (SDL_strcmp(str, keyw[i]) == 0) {
             return i;
@@ -151,41 +151,41 @@ con_keyword_t COM_GetKeyword(const char* str) {
     return CK_NONE;
 }
 
-bool COM_IsKeyword(const char* str) {
-    return COM_GetKeyword(str) != CK_NONE;
+bool CON_IsKeyword(const char* str) {
+    return CON_GetKeyword(str) != CK_NONE;
 }
 
 static void CON_LexKeywordError(const char* str) {
     if (str[0] == '{' && str[1] != 0) {
-        COM_Error("Expecting a SPACE or CR between '{' and '%s'.\n", str + 1);
+        CON_Error("Expecting a SPACE or CR between '{' and '%s'.\n", str + 1);
         return;
     }
     if (str[0] == '}' && str[1] != 0) {
-        COM_Error("Expecting a SPACE or CR between '}' and '%s'.\n", str + 1);
+        CON_Error("Expecting a SPACE or CR between '}' and '%s'.\n", str + 1);
         return;
     }
     if (str[0] == '/' && str[1] == '/' && str[2] != 0) {
-        COM_Error("Expecting a SPACE between '//' and '%s'.\n", str + 2);
+        CON_Error("Expecting a SPACE between '//' and '%s'.\n", str + 2);
         return;
     }
     if (str[0] == '/' && str[1] == '*' && str[2] != 0) {
-        COM_Error("Expecting a SPACE between '/*' and '%s'.\n", str + 2);
+        CON_Error("Expecting a SPACE between '/*' and '%s'.\n", str + 2);
         return;
     }
     if (str[0] == '*' && str[1] == '/' && str[2] != 0) {
-        COM_Error("Expecting a SPACE between '*/' and '%s'.\n", str + 2);
+        CON_Error("Expecting a SPACE between '*/' and '%s'.\n", str + 2);
         return;
     }
-    COM_Error("Expecting key word, but found '%s'.\n", str);
+    CON_Error("Expecting key word, but found '%s'.\n", str);
 }
 
-con_keyword_t COM_LexKeyword(con_compiler_t* ctx) {
-    COM_SkipSpace(ctx);
+con_keyword_t CON_LexKeyword(con_compiler_t* ctx) {
+    CON_SkipSpace(ctx);
     if (*ctx->cursor == 0) {
         return CK_NONE;
     }
-    const char* str = COM_LexString(ctx);
-    con_keyword_t keyword = COM_GetKeyword(str);
+    const char* str = CON_LexString(ctx);
+    con_keyword_t keyword = CON_GetKeyword(str);
     if (keyword == CK_NONE) {
         CON_LexKeywordError(str);
         return CK_NONE;
@@ -195,10 +195,10 @@ con_keyword_t COM_LexKeyword(con_compiler_t* ctx) {
     return keyword;
 }
 
-i32 COM_PeekKeyword(const con_compiler_t* ctx) {
+i32 CON_PeekKeyword(const con_compiler_t* ctx) {
     const char* temptextptr = ctx->cursor;
 
-    while (!COM_IsLetter(*temptextptr)) {
+    while (!CON_IsLetter(*temptextptr)) {
         temptextptr++;
         if (*temptextptr == 0) {
             return 0;
@@ -206,11 +206,11 @@ i32 COM_PeekKeyword(const con_compiler_t* ctx) {
     }
 
     i32 i = 0;
-    while (COM_IsLetter(*temptextptr)) {
+    while (CON_IsLetter(*temptextptr)) {
         tempbuf[i] = *(temptextptr++);
         i++;
     }
     tempbuf[i] = 0;
 
-    return COM_GetKeyword((char*) tempbuf);
+    return CON_GetKeyword((char*) tempbuf);
 }

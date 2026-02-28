@@ -21,49 +21,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#pragma once
+#include "con_cmds.h"
+#include "con_parser.h"
 
-#include "types.h"
+void CON_RightBrace(con_compiler_t* ctx) {
+    ctx->brace_depth--;
+    if (ctx->brace_depth < 0) {
+        CON_Error("Found more '}' than '{'.\n");
+    }
+}
 
-typedef struct {
-    // Current lexer position in source.
-    char* cursor;
-    // Current write position in bytecode.
-    i32* script_cursor;
-
-    // Pointer to loaded file text.
-    char* src;
-    // Size of loaded file text.
-    i32 src_size;
-
-    // Current line number in active file.
-    i16 line_number;
-    // Total lines processed across files.
-    i16 total_lines;
-
-    // Nesting depth of if/else blocks.
-    u8 if_depth;
-    // Braces nesting level.
-    i16 brace_depth;
-    // Currently parsing a "state" block?
-    u8 in_state_block;
-
-    // Label storage.
-    char* label;
-    // Number of defined labels.
-    i32 label_cnt;
-    // Position of given label in compiled script.
-    i32* label_code;
-
-    // Pointer to actor being parsed.
-    i32* curr_actor;
-
-    char error;
-    char warning;
-
-    i32 read_grp;
-} con_compiler_t;
-
-void COM_Error(const char* fmt, ...);
-
-void COM_Warn(const char* fmt, ...);
+void CON_LeftBrace(con_compiler_t* ctx) {
+    ctx->brace_depth++;
+    con_keyword_t kw;
+    do {
+        kw = CON_ParseCmd(ctx);
+    } while (kw != CK_NONE && kw != CK_RIGHT_BRACE);
+}

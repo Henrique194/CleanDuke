@@ -21,20 +21,31 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "com_cmds.h"
-#include "com_parser.h"
+#include "con_cmds.h"
+#include "con_main.h"
 
-void COM_RightBrace(con_compiler_t* ctx) {
-    ctx->brace_depth--;
-    if (ctx->brace_depth < 0) {
-        COM_Error("Found more '}' than '{'.\n");
+
+void CON_SkipComment(con_compiler_t* ctx) {
+    ctx->script_cursor--; // Negate the rem
+    while (*ctx->cursor != '\n') {
+        ctx->cursor++;
     }
 }
 
-void COM_LeftBrace(con_compiler_t* ctx) {
-    ctx->brace_depth++;
-    con_keyword_t kw;
+void CON_SkipBlockComment(con_compiler_t* ctx) {
+    ctx->script_cursor--;
+    short new_lines = 0;
     do {
-        kw = COM_ParseCmd(ctx);
-    } while (kw != CK_NONE && kw != CK_RIGHT_BRACE);
+        if (*ctx->cursor == '\n') {
+            new_lines++;
+        }
+        if (*ctx->cursor == 0) {
+            CON_Error("Found '/*' with no '*/'.\n");
+            ctx->line_number += new_lines;
+            return;
+        }
+        ctx->cursor++;
+    } while (ctx->cursor[0] != '*' || ctx->cursor[1] != '/');
+    ctx->line_number += new_lines;
+    ctx->cursor += 2;
 }
