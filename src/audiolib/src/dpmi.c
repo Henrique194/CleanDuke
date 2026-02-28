@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1994-1995 Apogee Software, Ltd.
  * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ * Copyright (C) Henrique Barateli, <henriquejb194@gmail.com>, et al.
  *
  * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
  *
@@ -19,33 +20,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
-/**********************************************************************
-   module: DPMI.C
-
-   author: James R. Dose
-   date:   April 8, 1994
-
-   Functions for performing DPMI calls.
-
-   (c) Copyright 1994 James R. Dose.  All Rights Reserved.
-**********************************************************************/
+// Functions for performing DOS Protected Mode Interface (DPMI) calls.
 
 #include <stdlib.h>
 #include "audiolib/dpmi.h"
 
-int DPMI_GetDOSMemory( void **ptr, void **descriptor, unsigned length )
-{
+int DPMI_GetDOSMemory(void** ptr, void** descriptor, unsigned length) {
     *ptr = malloc(length);
-	*descriptor = *ptr;
-	
-	return (descriptor == 0) ? DPMI_Error : DPMI_Ok;
+    *descriptor = *ptr;
+    return (descriptor == 0) ? DPMI_Error : DPMI_Ok;
 }
 
-int DPMI_FreeDOSMemory( void* descriptor )
-{
-	free(descriptor);
-	
-	return (descriptor == 0) ? DPMI_Error : DPMI_Ok;
+int DPMI_FreeDOSMemory(void* descriptor) {
+    free(descriptor);
+    return (descriptor == 0) ? DPMI_Error : DPMI_Ok;
 }

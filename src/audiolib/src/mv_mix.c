@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1994-1995 Apogee Software, Ltd.
  * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ * Copyright (C) Henrique Barateli, <henriquejb194@gmail.com>, et al.
  *
  * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
  *
@@ -19,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+// Multiple Voice ("multivoc") mixer callbacks.
 
 #include "audiolib/multivoc.h"
 

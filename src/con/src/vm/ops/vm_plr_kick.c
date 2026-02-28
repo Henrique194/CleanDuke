@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1994-1995 Apogee Software, Ltd.
  * Copyright (C) 1996, 2003 - 3D Realms Entertainment
+ * Copyright (C) Henrique Barateli, <henriquejb194@gmail.com>, et al.
  *
  * This file is part of Duke Nukem 3D version 1.5 - Atomic Edition
  *
